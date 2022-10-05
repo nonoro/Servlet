@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+    <!--    프로젝트 전체영역(jsp, java등등)에서 공유해서 사용할 수 있는 init-param설정  -->
+    <context-param>
+        <param-name>message</param-name>
+        <param-value>오늘도 수고하셨습니다</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>driverName</param-name>
+        <param-value>jdbc.odbc.OracleDriver</param-value>
+    </context-param>
+
+    <!--    initParam 설정    -->
+    <servlet>
+        <servlet-name>initParamServlet</servlet-name>
+        <servlet-class>ex1005.servlet.InitParamServlet</servlet-class>
+        <init-param>
+            <param-name>dbId</param-name>
+            <param-value>gyu</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPwd</param-name>
+            <param-value>1234</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>initParamServlet</servlet-name>
+        <url-pattern>/initParam</url-pattern>
+    </servlet-mapping>
+
+    <!--    initParamTest 설정    -->
+    <servlet>
+        <servlet-name>initParamTestServlet</servlet-name>
+        <servlet-class>ex1005.servlet.InitParamTestServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>initParamTestServlet</servlet-name>
+        <url-pattern>/initParamTest</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+
