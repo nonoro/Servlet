@@ -1,0 +1,122 @@
+
+ *jsp문서
+   index.jsp
+   left.jsp
+   center.jsp
+   top.jsp
+   footer.jsp
+
+   특이사항 : index.jsp문서 메인이다.
+              index.jsp문서는 3행 2열 테이블을 만든다.
+              index.jsp문서안에 left.jsp와 center.jsp는
+                 <iframe src="left.jsp"> ,  <iframe src="center.jsp">으로 넣는다.
+              index.jsp문서안에 top.jsp와 footer.jsp는 include개념으로 넣는다.
+
+
+
+*servlet문서 -> 반드시 web.xml문서 등록하고 mapping한다.
+ BoardServlet.java
+
+ LoginServlet.java - 비교할 dbId, dbPwd는 init-param전달받아 비교한다.
+ LogoutServlet.java
+
+ 특이사항: BoardServlet.java에서는 init()을 만들어서
+           application영역에서 list를 저장한다.
+           BoardServlet은 반드시 사전초기화<load-->한다.
+
+
+* BoardDTO.java  : 글번호 ,제목, 내용 속성 관리하는 객체
+
+------------------------------------------------------------
+ 1) BoardServlet.java 작성방법....
+
+ application영역에 List<BoardDTO>저장한다.
+
+ * BoardDTO의 속성(no, subject, content)
+
+ * application저장
+      application.setAttibute("boarList", 저장된list);
+
+          //:center.jsp에서k` ${boardList}
+         // <c:forEach items="${applicationScope.boardList}"
+
+  -application에 저장하는 시점!!! 중요
+    BoardServlet.java  -> 게시물 등록하기
+    BoardServlet.java에서 init 영역에서 준비한다.
+     그리고 서블릿을 등록할때 <load-on-startup>설정한다.
+
+     ex)
+     public void init(){
+       List<BoardDTO> list =new ArrayList<BoardDTO>();
+       //샘플 3개 게시물 초기치 만들기
+       list.add(new BoardDTO(....));
+       list.add(new BoardDTO(....));
+       list.add(new BoardDTO(....));
+
+         * 게시물의 초기치 데이터 3개를 context-param을 이용해서 제공한다.
+
+        여기서 application객체를 어떻게 구해???
+         ServletContext application = super.getServletContext();
+        list를 application에 저장한다.
+     }
+
+     public void  service(request, response){
+         //넘어오는 값받아서... -> DTO생성한후
+         application에 있는 list에 추가한다.
+
+         //이동한다. (index.jsp이동한다)
+         <script>
+            top.location.href="index.jsp";
+         </script>
+     }
+
+
+------------------------------------------
+
+left.jsp 문서에서
+  if(세션이 없다면){
+     //로그인폼을 출력
+  }else{
+     //이름과 접속시간출력
+  }
+
+=======================================================
+center.jsp문서에서
+ <%--
+   List<BoardDTO> list =(캐스팅) appication.getAttibute("boarList");
+   list를 반복해서 출력.!!
+ --%>
+  *JSTL변경
+  <c:forEach items="${applicationScope.boarList}" >
+
+ </c:forEach>
+
+
+ if(세션이있다면){
+     게시물 등록폼 출력
+  }
+
+
+===================================================
+LoginServlet.java
+  인증을 성공하면
+  //이동한다. (index.jsp이동한다)
+         <script>
+            top.location.href="index.jsp";
+         </script>
+
+======================================================
+LogoutServlet.java  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
